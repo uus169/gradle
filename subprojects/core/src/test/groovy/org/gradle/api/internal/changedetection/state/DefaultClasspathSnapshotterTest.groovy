@@ -64,7 +64,8 @@ class DefaultClasspathSnapshotterTest extends Specification {
         when:
         def snapshotInOriginalOrder = snapshotter.snapshot(files(rootFile1, rootDir, rootFile2), UNORDERED, TaskFilePropertySnapshotNormalizationStrategy.NONE)
         then:
-        snapshotInOriginalOrder.elements == [rootFile1, subFile1, subFile2, rootFile2]
+        println snapshotInOriginalOrder.elements*.name
+        snapshotInOriginalOrder.elements == [rootFile1, rootDir, subFile1, subFile2, rootFile2]
         1 * directoryFileTreeFactory.create(rootDir) >> rootDirTree
         _ * rootDirTree.patterns >> new PatternSet()
         _ * rootDirTree.dir >> rootFile1
@@ -76,7 +77,7 @@ class DefaultClasspathSnapshotterTest extends Specification {
         when:
         def snapshotInReverseOrder = snapshotter.snapshot(files(rootFile2, rootFile1, rootDir), UNORDERED, TaskFilePropertySnapshotNormalizationStrategy.NONE)
         then:
-        snapshotInReverseOrder.elements == [rootFile2, rootFile1, subFile1, subFile2]
+        snapshotInReverseOrder.elements == [rootFile2, rootFile1, rootDir, subFile1, subFile2]
         1 * directoryFileTreeFactory.create(rootDir) >> rootDirTree
         _ * rootDirTree.patterns >> new PatternSet()
         _ * rootDirTree.dir >> rootFile2
