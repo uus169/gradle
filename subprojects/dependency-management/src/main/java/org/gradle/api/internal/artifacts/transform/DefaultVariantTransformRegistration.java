@@ -98,7 +98,7 @@ class DefaultVariantTransformRegistration implements VariantTransformRegistry.Re
 
             DefaultBuildCacheHasher hasher = new DefaultBuildCacheHasher();
             hasher.putBytes(inputsHash);
-            snapshot.appendToHasher(hasher);
+            hasher.putBytes(snapshot.getHash().asBytes());
 
             HashCode resultHash = hasher.hash();
 
