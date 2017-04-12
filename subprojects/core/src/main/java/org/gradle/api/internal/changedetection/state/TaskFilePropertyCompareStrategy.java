@@ -22,7 +22,6 @@ import org.gradle.api.internal.changedetection.resources.NormalizedSnapshot;
 import org.gradle.api.internal.changedetection.rules.ChangeType;
 import org.gradle.api.internal.changedetection.rules.FileChange;
 import org.gradle.api.internal.changedetection.rules.TaskStateChange;
-import org.gradle.caching.internal.BuildCacheHasher;
 
 import java.util.Iterator;
 import java.util.List;
@@ -56,14 +55,8 @@ public enum TaskFilePropertyCompareStrategy {
         delegate.sort(snapshots);
     }
 
-    public void appendToHasher(BuildCacheHasher hasher, Map<String, NormalizedFileSnapshot> snapshots) {
-        delegate.appendToHasher(hasher, snapshots);
-    }
-
     interface Impl {
         Iterator<TaskStateChange> iterateContentChangesSince(Map<String, NormalizedFileSnapshot> current, Map<String, NormalizedFileSnapshot> previous, String fileType, boolean pathIsAbsolute);
-        // TODO wolfs: Remove this method
-        void appendToHasher(BuildCacheHasher hasher, Map<String, NormalizedFileSnapshot> snapshots);
         boolean isIncludeAdded();
         void sort(List<NormalizedSnapshot> snapshots);
     }
