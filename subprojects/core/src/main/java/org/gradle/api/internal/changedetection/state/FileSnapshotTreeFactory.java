@@ -42,14 +42,14 @@ public class FileSnapshotTreeFactory {
         this.directoryFileTreeFactory = directoryFileTreeFactory;
     }
 
-    public DefaultFileSnapshotTree fileTree(FileTreeInternal fileTree) {
+    public DefaultSnapshotTree fileTree(FileTreeInternal fileTree) {
         List<FileSnapshot> elements = Lists.newArrayList();
         // TODO: If we could get the backing file we could add it as root element
         fileTree.visitTreeOrBackingFile(new FileVisitorImpl(elements));
-        return new DefaultFileSnapshotTree(null, elements);
+        return new DefaultSnapshotTree(null, elements);
     }
 
-    public DefaultFileSnapshotTree directoryTree(DirectoryFileTree directoryFileTree) {
+    public DefaultSnapshotTree directoryTree(DirectoryFileTree directoryFileTree) {
         List<FileSnapshot> elements;
         FileSnapshot root = fileSnapshotFactory.directorySnapshot(directoryFileTree.getDir());
         if (!directoryFileTree.getPatterns().isEmpty()) {
@@ -70,11 +70,11 @@ public class FileSnapshotTreeFactory {
             }
         }
 
-        return new DefaultFileSnapshotTree(root, elements);
+        return new DefaultSnapshotTree(root, elements);
     }
 
-    public List<FileSnapshotTree> fileCollection(FileCollection input) {
-        LinkedList<FileSnapshotTree> fileTreeElements = Lists.newLinkedList();
+    public List<SnapshotTree> fileCollection(FileCollection input) {
+        LinkedList<SnapshotTree> fileTreeElements = Lists.newLinkedList();
         FileCollectionInternal fileCollection = (FileCollectionInternal) input;
         FileCollectionVisitorImpl visitor = new FileCollectionVisitorImpl(fileTreeElements);
         fileCollection.visitRootElements(visitor);
@@ -82,9 +82,9 @@ public class FileSnapshotTreeFactory {
     }
 
     private class FileCollectionVisitorImpl implements FileCollectionVisitor {
-        private final List<FileSnapshotTree> fileTreeElements;
+        private final List<SnapshotTree> fileTreeElements;
 
-        FileCollectionVisitorImpl(List<FileSnapshotTree> fileTreeElements) {
+        FileCollectionVisitorImpl(List<SnapshotTree> fileTreeElements) {
             this.fileTreeElements = fileTreeElements;
         }
 
