@@ -51,8 +51,8 @@ public enum TaskFilePropertyCompareStrategy {
         return delegate.iterateContentChangesSince(current, previous, fileType, pathIsAbsolute);
     }
 
-    public List<NormalizedFileSnapshot> sort(List<NormalizedFileSnapshot> snapshots) {
-        return delegate.sort(snapshots);
+    public void sort(List<NormalizedFileSnapshot> snapshots) {
+        delegate.sort(snapshots);
     }
 
     public void appendToHasher(BuildCacheHasher hasher, Map<String, NormalizedFileSnapshot> snapshots) {
@@ -63,7 +63,7 @@ public enum TaskFilePropertyCompareStrategy {
         Iterator<TaskStateChange> iterateContentChangesSince(Map<String, NormalizedFileSnapshot> current, Map<String, NormalizedFileSnapshot> previous, String fileType, boolean pathIsAbsolute);
         void appendToHasher(BuildCacheHasher hasher, Map<String, NormalizedFileSnapshot> snapshots);
         boolean isIncludeAdded();
-        List<NormalizedFileSnapshot> sort(List<NormalizedFileSnapshot> snapshots);
+        void sort(List<NormalizedFileSnapshot> snapshots);
     }
 
     /**
