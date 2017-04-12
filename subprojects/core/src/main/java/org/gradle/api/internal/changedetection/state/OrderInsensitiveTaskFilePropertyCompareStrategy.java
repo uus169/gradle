@@ -21,6 +21,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MultimapBuilder;
+import org.gradle.api.internal.changedetection.resources.NormalizedSnapshot;
 import org.gradle.api.internal.changedetection.rules.ChangeType;
 import org.gradle.api.internal.changedetection.rules.FileChange;
 import org.gradle.api.internal.changedetection.rules.TaskStateChange;
@@ -189,9 +190,10 @@ class OrderInsensitiveTaskFilePropertyCompareStrategy implements TaskFilePropert
     }
 
     @Override
+    // TODO wolfs: Remove this method
     public void appendToHasher(BuildCacheHasher hasher, Map<String, NormalizedFileSnapshot> snapshots) {
         List<NormalizedFileSnapshot> normalizedSnapshots = Lists.newArrayList(snapshots.values());
-        sort(normalizedSnapshots);
+        Collections.sort(normalizedSnapshots);
         for (NormalizedFileSnapshot normalizedSnapshot : normalizedSnapshots) {
             normalizedSnapshot.appendToHasher(hasher);
         }
@@ -203,7 +205,7 @@ class OrderInsensitiveTaskFilePropertyCompareStrategy implements TaskFilePropert
     }
 
     @Override
-    public void sort(List<NormalizedFileSnapshot> snapshots) {
+    public void sort(List<NormalizedSnapshot> snapshots) {
         Collections.sort(snapshots);
     }
 
