@@ -16,27 +16,21 @@
 
 package org.gradle.internal.service.scopes;
 
-import com.google.common.hash.HashCode;
 import org.gradle.api.internal.cache.CrossBuildInMemoryCacheFactory;
 import org.gradle.api.internal.cache.StringInterner;
-import org.gradle.api.internal.changedetection.state.CachingClasspathEntryHasher;
 import org.gradle.api.internal.changedetection.state.CachingFileHasher;
-import org.gradle.api.internal.changedetection.state.ClasspathEntryHasher;
 import org.gradle.api.internal.changedetection.state.ClasspathSnapshotter;
 import org.gradle.api.internal.changedetection.state.CrossBuildFileHashCache;
-import org.gradle.api.internal.changedetection.state.DefaultClasspathContentHasher;
-import org.gradle.api.internal.changedetection.state.DefaultClasspathEntryHasher;
 import org.gradle.api.internal.changedetection.state.DefaultClasspathSnapshotter;
 import org.gradle.api.internal.changedetection.state.DefaultFileSystemMirror;
 import org.gradle.api.internal.changedetection.state.DefaultGenericFileCollectionSnapshotter;
 import org.gradle.api.internal.changedetection.state.FileSnapshotFactory;
+import org.gradle.api.internal.changedetection.state.FileSnapshotTreeFactory;
 import org.gradle.api.internal.changedetection.state.FileSystemMirror;
 import org.gradle.api.internal.changedetection.state.GenericFileCollectionSnapshotter;
 import org.gradle.api.internal.changedetection.state.GlobalScopeFileTimeStampInspector;
 import org.gradle.api.internal.changedetection.state.InMemoryCacheDecoratorFactory;
-import org.gradle.api.internal.changedetection.state.TaskHistoryStore;
 import org.gradle.api.internal.changedetection.state.ValueSnapshotter;
-import org.gradle.api.internal.changedetection.state.FileSnapshotTreeFactory;
 import org.gradle.api.internal.file.collections.DirectoryFileTreeFactory;
 import org.gradle.api.internal.hash.DefaultFileHasher;
 import org.gradle.api.internal.hash.FileHasher;
@@ -44,7 +38,6 @@ import org.gradle.api.internal.initialization.loadercache.ClassLoaderCache;
 import org.gradle.api.internal.initialization.loadercache.DefaultClassLoaderCache;
 import org.gradle.api.internal.initialization.loadercache.DefaultClasspathHasher;
 import org.gradle.cache.CacheRepository;
-import org.gradle.cache.PersistentIndexedCache;
 import org.gradle.cache.internal.CacheRepositoryServices;
 import org.gradle.cache.internal.CacheScopeMapping;
 import org.gradle.groovy.scripts.internal.CrossBuildInMemoryCachingScriptClassCache;
@@ -62,7 +55,6 @@ import org.gradle.internal.classpath.DefaultCachedClasspathTransformer;
 import org.gradle.internal.event.ListenerManager;
 import org.gradle.internal.file.JarCache;
 import org.gradle.internal.nativeintegration.filesystem.FileSystem;
-import org.gradle.internal.serialize.HashCodeSerializer;
 import org.gradle.internal.service.ServiceRegistration;
 import org.gradle.internal.service.ServiceRegistry;
 
@@ -109,11 +101,6 @@ public class GradleUserHomeScopeServices {
         return new RegistryAwareClassLoaderHierarchyHasher(registry, classLoaderHasher);
     }
 
-    ClasspathEntryHasher createClasspathEntryHasher(TaskHistoryStore store) {
-        PersistentIndexedCache<HashCode, HashCode> signatureCache = store.createCache("jvmRuntimeClassSignatures", HashCode.class, new HashCodeSerializer(), 400000, true);
-        return new CachingClasspathEntryHasher(new DefaultClasspathEntryHasher(new DefaultClasspathContentHasher()), signatureCache);
-    }
-
     FileSystemMirror createFileSystemMirror(ListenerManager listenerManager) {
         DefaultFileSystemMirror fileSystemMirror = new DefaultFileSystemMirror();
         listenerManager.addListener(fileSystemMirror);
@@ -132,8 +119,8 @@ public class GradleUserHomeScopeServices {
         return new DefaultGenericFileCollectionSnapshotter(fileSnapshotTreeFactory, stringInterner);
     }
 
-    ClasspathSnapshotter createClasspathSnapshotter(FileSnapshotTreeFactory fileSnapshotTreeFactory, StringInterner stringInterner, ClasspathEntryHasher classpathEntryHasher) {
-        return new DefaultClasspathSnapshotter(fileSnapshotTreeFactory, stringInterner, classpathEntryHasher);
+    ClasspathSnapshotter createClasspathSnapshotter(FileSnapshotTreeFactory fileSnapshotTreeFactory, StringInterner stringInterner) {
+        return new DefaultClasspathSnapshotter(fileSnapshotTreeFactory, stringInterner);
     }
 
     ClasspathHasher createClasspathHasher(ClasspathSnapshotter snapshotter) {

@@ -45,6 +45,7 @@ import org.gradle.api.internal.changedetection.state.FileCollectionSnapshot;
 import org.gradle.api.internal.changedetection.state.FileCollectionSnapshotter;
 import org.gradle.api.internal.changedetection.state.FileCollectionSnapshotterRegistry;
 import org.gradle.api.internal.changedetection.state.FileSnapshotFactory;
+import org.gradle.api.internal.changedetection.state.FileSnapshotTreeFactory;
 import org.gradle.api.internal.changedetection.state.FileSystemMirror;
 import org.gradle.api.internal.changedetection.state.GenericFileCollectionSnapshotter;
 import org.gradle.api.internal.changedetection.state.InMemoryCacheDecoratorFactory;
@@ -52,7 +53,6 @@ import org.gradle.api.internal.changedetection.state.OutputFilesSnapshotter;
 import org.gradle.api.internal.changedetection.state.TaskHistoryRepository;
 import org.gradle.api.internal.changedetection.state.TaskHistoryStore;
 import org.gradle.api.internal.changedetection.state.ValueSnapshotter;
-import org.gradle.api.internal.changedetection.state.FileSnapshotTreeFactory;
 import org.gradle.api.internal.file.FileCollectionFactory;
 import org.gradle.api.internal.file.collections.DirectoryFileTreeFactory;
 import org.gradle.api.internal.hash.DefaultFileHasher;
@@ -181,8 +181,8 @@ public class TaskExecutionServices {
         return new DefaultGenericFileCollectionSnapshotter(fileSnapshotTreeFactory, stringInterner);
     }
 
-    ClasspathSnapshotter createClasspathSnapshotter(FileSnapshotTreeFactory fileSnapshotTreeFactory, StringInterner stringInterner, ClasspathEntryHasher classpathEntryHasher) {
-        return new DefaultClasspathSnapshotter(fileSnapshotTreeFactory, stringInterner, classpathEntryHasher);
+    ClasspathSnapshotter createClasspathSnapshotter(FileSnapshotTreeFactory fileSnapshotTreeFactory, StringInterner stringInterner) {
+        return new DefaultClasspathSnapshotter(fileSnapshotTreeFactory, stringInterner);
     }
 
     CompileClasspathSnapshotter createCompileClasspathSnapshotter(FileSnapshotTreeFactory fileSnapshotTreeFactory, StringInterner stringInterner, TaskHistoryStore store) {
