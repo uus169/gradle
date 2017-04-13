@@ -16,6 +16,7 @@
 
 package org.gradle.api.internal.changedetection.state
 
+import com.google.common.hash.HashCode
 import org.gradle.api.file.FileVisitor
 import org.gradle.api.internal.cache.StringInterner
 import org.gradle.api.internal.file.DefaultFileVisitDetails
@@ -25,6 +26,7 @@ import org.gradle.api.internal.file.collections.DirectoryFileTreeFactory
 import org.gradle.api.internal.file.collections.SimpleFileCollection
 import org.gradle.api.internal.hash.FileHasher
 import org.gradle.api.tasks.util.PatternSet
+import org.gradle.cache.PersistentIndexedCache
 import org.gradle.test.fixtures.file.CleanupTestDirectory
 import org.gradle.test.fixtures.file.TestFile
 import org.gradle.test.fixtures.file.TestNameTestDirectoryProvider
@@ -49,7 +51,14 @@ class DefaultClasspathSnapshotterTest extends Specification {
     def fileSystem = TestFiles.fileSystem()
     def directoryFileTreeFactory = Mock(DirectoryFileTreeFactory)
     def fileSystemMirror = Mock(FileSystemMirror)
-    def snapshotter = new DefaultClasspathSnapshotter(new FileSnapshotTreeFactory(new FileSnapshotFactory(fileSystem, fileSystemMirror, stringInterner, hasher), fileSystemMirror, directoryFileTreeFactory), stringInterner)
+    PersistentIndexedCache<HashCode, HashCode> jarCache = Mock()
+    def snapshotter = new DefaultClasspathSnapshotter(
+        new FileSnapshotTreeFactory(
+            new FileSnapshotFactory(fileSystem, fileSystemMirror, stringInterner, hasher), fileSystemMirror, directoryFileTreeFactory
+        ),
+        stringInterner,
+        jarCache
+    )
 
     def "root elements are unsorted, non-root elements are sorted amongst themselves"() {
         given:
