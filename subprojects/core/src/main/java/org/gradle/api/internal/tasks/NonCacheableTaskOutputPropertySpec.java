@@ -21,16 +21,14 @@ import org.gradle.api.internal.changedetection.state.FileCollectionSnapshotter;
 import org.gradle.api.internal.changedetection.state.SnapshotNormalizationStrategy;
 import org.gradle.api.internal.changedetection.state.TaskFilePropertyCompareStrategy;
 import org.gradle.api.internal.file.FileResolver;
-import org.gradle.api.tasks.TaskOutputs;
 import org.gradle.api.tasks.TaskPropertyBuilder;
 
-public class NonCacheableTaskOutputPropertySpec extends AbstractTaskOutputsDeprecatingTaskPropertyBuilder implements TaskOutputFilePropertySpec {
+public class NonCacheableTaskOutputPropertySpec extends AbstractTaskPropertyBuilder implements TaskOutputFilePropertySpec {
 
     private final CompositeTaskOutputPropertySpec parent;
     private final FileCollection files;
 
-    public NonCacheableTaskOutputPropertySpec(TaskOutputs taskOutputs, String taskName, CompositeTaskOutputPropertySpec parent, FileResolver resolver, Object paths) {
-        super(taskOutputs);
+    public NonCacheableTaskOutputPropertySpec(String taskName, CompositeTaskOutputPropertySpec parent, FileResolver resolver, Object paths) {
         this.parent = parent;
         this.files = new TaskPropertyFileCollection(taskName, "output", this, resolver, paths);
     }
