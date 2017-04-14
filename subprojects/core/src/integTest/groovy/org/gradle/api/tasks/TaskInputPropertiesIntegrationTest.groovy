@@ -245,29 +245,6 @@ class TaskInputPropertiesIntegrationTest extends AbstractIntegrationSpec {
         succeeds "test"
     }
 
-    @Ignore("Must fix for 4.0")
-    @Unroll
-    def "deprecation warning printed when inputs calls are chained"() {
-        buildFile << """
-            task test {
-                ${what}.${call}.${call}
-            }
-        """
-        executer.expectDeprecationWarning()
-        executer.requireGradleDistribution()
-
-        expect:
-        succeeds "test"
-        outputContains "The chaining of the ${method} method has been deprecated and is scheduled to be removed in Gradle 4.0. " +
-            "Please use the ${method} method on Task${what.capitalize()} directly instead."
-
-        where:
-        what     | method              | call
-        "inputs" | "file(Object)"      | 'file("a")'
-        "inputs" | "dir(Object)"       | 'dir("a")'
-        "inputs" | "files(Object...)"  | 'files("a", "b")'
-    }
-
     def "task depends on other task whose outputs are its inputs"() {
         buildFile << """
             task a {

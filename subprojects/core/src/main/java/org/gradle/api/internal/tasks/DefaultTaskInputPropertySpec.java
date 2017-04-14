@@ -24,25 +24,18 @@ import org.gradle.api.internal.changedetection.state.TaskFilePropertyCompareStra
 import org.gradle.api.internal.changedetection.state.TaskFilePropertySnapshotNormalizationStrategy;
 import org.gradle.api.internal.file.FileResolver;
 import org.gradle.api.tasks.PathSensitivity;
-import org.gradle.api.tasks.TaskInputFilePropertyBuilder;
-import org.gradle.api.tasks.TaskInputs;
-import org.gradle.util.DeprecationLogger;
-
-import java.util.Map;
 
 import static org.gradle.api.internal.changedetection.state.TaskFilePropertySnapshotNormalizationStrategy.ABSOLUTE;
 
 public class DefaultTaskInputPropertySpec extends AbstractTaskPropertyBuilder implements TaskInputPropertySpecAndBuilder {
 
-    private final TaskInputs taskInputs;
     private final TaskPropertyFileCollection files;
     private boolean skipWhenEmpty;
     private boolean optional;
     private SnapshotNormalizationStrategy snapshotNormalizationStrategy = ABSOLUTE;
     private Class<? extends FileCollectionSnapshotter> snapshotter = GenericFileCollectionSnapshotter.class;
 
-    public DefaultTaskInputPropertySpec(TaskInputs taskInputs, String taskName, boolean skipWhenEmpty, FileResolver resolver, Object paths) {
-        this.taskInputs = taskInputs;
+    public DefaultTaskInputPropertySpec(String taskName, boolean skipWhenEmpty, FileResolver resolver, Object paths) {
         this.files = new TaskPropertyFileCollection(taskName, "input", this, resolver, paths);
         this.skipWhenEmpty = skipWhenEmpty;
     }
@@ -123,81 +116,6 @@ public class DefaultTaskInputPropertySpec extends AbstractTaskPropertyBuilder im
     @Override
     public String toString() {
         return getPropertyName() + " (" + snapshotNormalizationStrategy + ")";
-    }
-
-    // --- Deprecated delegate methods
-
-    private TaskInputs getTaskInputs(String method) {
-        DeprecationLogger.nagUserOfDiscontinuedMethod("chaining of the " + method, String.format("Please use the %s method on TaskInputs directly instead.", method));
-        return taskInputs;
-    }
-
-    @Override
-    public boolean getHasInputs() {
-        return getTaskInputs("getHasInputs()").getHasInputs();
-    }
-
-    @Override
-    public FileCollection getFiles() {
-        return getTaskInputs("getFiles()").getFiles();
-    }
-
-    @Override
-    public TaskInputFilePropertyBuilder files(Object... paths) {
-        return getTaskInputs("files(Object...)").files(paths);
-    }
-
-    @Override
-    public TaskInputFilePropertyBuilder file(Object path) {
-        return getTaskInputs("file(Object)").file(path);
-    }
-
-    @Override
-    public TaskInputFilePropertyBuilder dir(Object dirPath) {
-        return getTaskInputs("dir(Object)").dir(dirPath);
-    }
-
-    @Override
-    public Map<String, Object> getProperties() {
-        return getTaskInputs("getProperties()").getProperties();
-    }
-
-    @Override
-    public TaskInputs property(String name, Object value) {
-        return getTaskInputs("property(String, Object)").property(name, value);
-    }
-
-    @Override
-    public TaskInputs properties(Map<String, ?> properties) {
-        return getTaskInputs("properties(Map)").properties(properties);
-    }
-
-    @Override
-    public boolean getHasSourceFiles() {
-        return getTaskInputs("getHasSourceFiles()").getHasSourceFiles();
-    }
-
-    @Override
-    public FileCollection getSourceFiles() {
-        return getTaskInputs("getSourceFiles()").getSourceFiles();
-    }
-
-    @Override
-    @Deprecated
-    public TaskInputs source(Object... paths) {
-        return getTaskInputs("source(Object...)").source(paths);
-    }
-
-    @Override
-    @Deprecated
-    public TaskInputs source(Object path) {
-        return getTaskInputs("source(Object)").source(path);
-    }
-
-    @Override
-    @Deprecated
-    public TaskInputs sourceDir(Object path) {
-        return getTaskInputs("sourceDir(Object)").sourceDir(path);
     }
 
     @Override

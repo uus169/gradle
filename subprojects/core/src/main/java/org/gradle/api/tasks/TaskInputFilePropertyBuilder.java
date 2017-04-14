@@ -17,10 +17,7 @@
 package org.gradle.api.tasks;
 
 import org.gradle.api.Incubating;
-import org.gradle.api.file.FileCollection;
 import org.gradle.internal.HasInternalProtocol;
-
-import java.util.Map;
 
 /**
  * Describes an input property of a task that contains zero or more files.
@@ -29,7 +26,7 @@ import java.util.Map;
  */
 @Incubating
 @HasInternalProtocol
-public interface TaskInputFilePropertyBuilder extends TaskFilePropertyBuilder, TaskInputs {
+public interface TaskInputFilePropertyBuilder extends TaskFilePropertyBuilder {
     /**
      * {@inheritDoc}
      */
@@ -67,121 +64,4 @@ public interface TaskInputFilePropertyBuilder extends TaskFilePropertyBuilder, T
      */
     @Override
     TaskInputFilePropertyBuilder withPathSensitivity(PathSensitivity sensitivity);
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Use {@link TaskInputs#getHasInputs()} directly instead.
-     */
-    @Deprecated
-    @Override
-    boolean getHasInputs();
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Use {@link TaskInputs#getFiles()} directly instead.
-     */
-    @Deprecated
-    @Override
-    FileCollection getFiles();
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Use {@link TaskInputs#files(Object...)} directly instead.
-     */
-    @Deprecated
-    @Override
-    TaskInputFilePropertyBuilder files(Object... paths);
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Use {@link TaskInputs#file(Object)} directly instead.
-     */
-    @Deprecated
-    @Override
-    TaskInputFilePropertyBuilder file(Object path);
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Use {@link TaskInputs#dir(Object)} directly instead.
-     */
-    @Deprecated
-    @Override
-    TaskInputFilePropertyBuilder dir(Object dirPath);
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Use {@link TaskInputs#getProperties()} directly instead.
-     */
-    @Deprecated
-    @Override
-    Map<String, Object> getProperties();
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Use {@link TaskInputs#property(String, Object)} directly instead.
-     */
-    @Deprecated
-    @Override
-    TaskInputs property(String name, Object value);
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Use {@link TaskInputs#properties(Map)} directly instead.
-     */
-    @Deprecated
-    @Override
-    TaskInputs properties(Map<String, ?> properties);
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Use {@link TaskInputs#getHasSourceFiles()} directly instead.
-     */
-    @Deprecated
-    @Override
-    boolean getHasSourceFiles();
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Use {@link TaskInputs#getSourceFiles()} directly instead.
-     */
-    @Deprecated
-    @Override
-    FileCollection getSourceFiles();
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Use {@link TaskInputs#source(Object...)} directly instead.
-     */
-    @Deprecated
-    @Override
-    TaskInputs source(Object... paths);
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Use {@link TaskInputs#source(Object)} directly instead.
-     */
-    @Deprecated
-    @Override
-    TaskInputs source(Object path);
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Use {@link TaskInputs#sourceDir(Object)} directly instead.
-     */
-    @Deprecated
-    @Override
-    TaskInputs sourceDir(Object path);
 }
