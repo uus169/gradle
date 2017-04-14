@@ -35,9 +35,8 @@ public class DefaultTaskInputPropertySpec extends AbstractTaskPropertyBuilder im
     private SnapshotNormalizationStrategy snapshotNormalizationStrategy = ABSOLUTE;
     private Class<? extends FileCollectionSnapshotter> snapshotter = GenericFileCollectionSnapshotter.class;
 
-    public DefaultTaskInputPropertySpec(String taskName, boolean skipWhenEmpty, FileResolver resolver, Object paths) {
+    public DefaultTaskInputPropertySpec(String taskName, FileResolver resolver, Object paths) {
         this.files = new TaskPropertyFileCollection(taskName, "input", this, resolver, paths);
-        this.skipWhenEmpty = skipWhenEmpty;
     }
 
     @Override
